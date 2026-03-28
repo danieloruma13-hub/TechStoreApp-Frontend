@@ -1,0 +1,68 @@
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.filterSection {
+  margin-bottom: 2rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.productCard {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: all var(--ease-base);
+}
+
+.productCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--purple-500);
+  box-shadow: var(--shadow-purple);
+}
+
+.imageWrapper {
+  position: relative;
+  background: var(--bg-elevated);
+  aspect-ratio: 1/1;
+  overflow: hidden;
+}
+
+.productDetails {
+  padding: 1.25rem;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: none; /* Usually hidden on mobile in prod, or turned into a drawer */
+  }
+}

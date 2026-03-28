@@ -1,0 +1,23 @@
+.pcard { display:block; background:var(--bg-card); border:1px solid rgba(124,58,237,0.12); border-radius:var(--r-lg); overflow:hidden; color:inherit; text-decoration:none; transition:all var(--ease-base); position:relative; }
+.pcard:hover { border-color:rgba(124,58,237,0.35); transform:translateY(-5px); box-shadow:0 20px 56px rgba(0,0,0,0.5),0 0 0 1px rgba(124,58,237,0.1); }
+.pcard-img-wrap { position:relative; aspect-ratio:1; overflow:hidden; background:var(--bg-elevated); }
+.pcard-img { width:100%; height:100%; object-fit:contain; padding:1rem; transition:transform 0.5s ease; }
+.pcard:hover .pcard-img { transform:scale(1.06); }
+.pcard-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+.pcard-badges { position:absolute; top:0.6rem; left:0.6rem; display:flex; flex-direction:column; gap:0.3rem; }
+.pcard-wish { position:absolute; top:0.6rem; right:0.6rem; width:32px; height:32px; border-radius:50%; background:rgba(8,8,15,0.7); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; color:var(--text-muted); border:none; cursor:pointer; transition:all var(--ease-fast); opacity:0; transform:scale(0.8); }
+.pcard:hover .pcard-wish,.pcard-wish.active { opacity:1; transform:scale(1); }
+.pcard-wish.active { color:#f87171; background:rgba(239,68,68,0.15); }
+.pcard-wish:hover:not(.active) { color:#f87171; background:rgba(239,68,68,0.1); }
+.pcard-overlay { position:absolute; inset:0; background:rgba(5,5,14,0.55); backdrop-filter:blur(2px); display:flex; align-items:flex-end; justify-content:center; padding-bottom:1.1rem; opacity:0; transition:opacity var(--ease-base); }
+.pcard:hover .pcard-overlay { opacity:1; }
+.pcard-body { padding:1rem 1rem 1.1rem; }
+.pcard-brand { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); margin-bottom:0.3rem; }
+.pcard-name { font-size:0.9rem; font-weight:600; color:var(--text-primary); line-height:1.35; margin-bottom:0.4rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.pcard-rating { display:flex; align-items:center; gap:0.3rem; margin-bottom:0.5rem; }
+.pcard-stars { font-size:0.78rem; font-weight:700; color:#facc15; }
+.pcard-reviews { font-size:0.73rem; color:var(--text-muted); }
+.pcard-price-row { display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+.pcard-price { font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700; color:var(--text-primary); }
+.pcard-compare { font-size:0.8rem; color:var(--text-muted); text-decoration:line-through; }
+.pcard-save { display:inline-flex; align-items:center; gap:0.15rem; font-size:0.68rem; font-weight:700; color:#4ade80; }

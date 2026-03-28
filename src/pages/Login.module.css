@@ -1,0 +1,41 @@
+.authCard {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-xl);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.form {
+  display: flex;
+  vertical-align: middle;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.link {
+  color: var(--purple-400);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--purple-300);
+  text-decoration: underline;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 480px) {
+  .authCard {
+    padding: 1.5rem;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+}

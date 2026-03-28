@@ -1,0 +1,71 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  padding: 4rem 0;
+  align-items: start;
+}
+
+.mainImage {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.tabsContainer {
+  margin-top: 3rem;
+  background: var(--bg-secondary);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  border: 1px solid var(--border-subtle);
+}
+
+.tabsHeader {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 1.5rem;
+}
+
+.tabsHeader button {
+  padding-bottom: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  transition: var(--ease-fast);
+}
+
+.tabsHeader button.activeTab {
+  color: var(--purple-400);
+  border-bottom: 2px solid var(--purple-400);
+}
+
+.tabContent {
+  min-height: 100px;
+}
+
+@media (max-width: 968px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

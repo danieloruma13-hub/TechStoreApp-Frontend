@@ -1,0 +1,61 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.itemCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.itemImage {
+  width: 90px;
+  height: 90px;
+  background: var(--bg-elevated);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.itemImage img { width: 100%; height: 100%; object-fit: cover; }
+
+.itemInfo { flex: 1; }
+
+.itemTotal {
+  font-weight: 700;
+  font-family: var(--font-display);
+  min-width: 100px;
+  text-align: right;
+}
+
+.summaryCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--r-xl);
+  padding: 2rem;
+  position: sticky;
+  top: 100px;
+}
+
+.secureBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 992px) {
+  .layout { grid-template-columns: 1fr; }
+  .itemCard { flex-wrap: wrap; }
+  .itemInfo { min-width: 200px; }
+}
