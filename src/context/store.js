@@ -1,7 +1,5 @@
 import { create } from 'zustand';
-import axios from 'axios';
-
-const API_URL = 'https://techstoreapp-gobr.onrender.com/api';
+import api from '../utils/api';
 
 // --- AUTH STORE ---
 export const useAuthStore = create((set) => ({
@@ -12,7 +10,7 @@ export const useAuthStore = create((set) => ({
   login: async (email, password) => {
     set({ loading: true });
     try {
-      const res = await axios.post(`${API_URL}/auth/login`, { email, password });
+      const res = await api.post('/auth/login', { email, password });
       const { token, user } = res.data;
       localStorage.setItem('ts_token', token);
       localStorage.setItem('ts_user', JSON.stringify(user));
@@ -27,7 +25,7 @@ export const useAuthStore = create((set) => ({
   register: async (full_name, email, password) => {
     set({ loading: true });
     try {
-      const res = await axios.post(`${API_URL}/auth/register`, { full_name, email, password });
+      const res = await api.post('/auth/register', { full_name, email, password });
       const { token, user } = res.data;
       localStorage.setItem('ts_token', token);
       localStorage.setItem('ts_user', JSON.stringify(user));
@@ -49,9 +47,7 @@ export const useAuthStore = create((set) => ({
     const token = localStorage.getItem('ts_token');
     if (!token) return;
     try {
-      const res = await axios.get(`${API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.get('/auth/me');
       set({ user: res.data.user });
     } catch (err) {
       localStorage.clear();
@@ -90,9 +86,7 @@ export const useCartStore = create((set, get) => ({
 
   clearCart: () => set({ cart: [], count: 0 }),
 
-  fetchCart: async () => {
-    console.log("Cart ready");
-  }
+  fetchCart: async () => {}
 }));
 
 // --- WISHLIST STORE ---
@@ -111,7 +105,5 @@ export const useWishlistStore = create((set) => ({
     set((state) => ({ wishlist: state.wishlist.filter(i => i.id !== id) }));
   },
 
-  fetchWishlist: async () => {
-    console.log("Wishlist ready");
-  }
+  fetchWishlist: async () => {}
 }));
