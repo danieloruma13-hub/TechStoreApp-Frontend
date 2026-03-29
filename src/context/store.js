@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import api from '../utils/api';
 
-// --- AUTH STORE ---
 export const useAuthStore = create((set) => ({
   user: JSON.parse(localStorage.getItem('ts_user')) || null,
   token: localStorage.getItem('ts_token') || null,
@@ -56,40 +55,51 @@ export const useAuthStore = create((set) => ({
   }
 }));
 
-// --- CART STORE ---
 export const useCartStore = create((set, get) => ({
-  cart: [],
+  items: [],
   count: 0,
-  isOpen: false,
+  subtotal: 0,
+  drawerOpen: false,
 
-  openDrawer: () => set({ isOpen: true }),
-  closeDrawer: () => set({ isOpen: false }),
+  openDrawer: () => set({ drawerOpen: true }),
+  closeDrawer: () => set({ drawerOpen: false }),
 
   addToCart: (product) => {
     set((state) => {
-      const exists = state.cart.find(i => i.id === product.id);
-      const cart = exists
-        ? state.cart.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i)
-        : [...state.cart, { ...product, qty: 1 }];
-      const count = cart.reduce((a, i) => a + i.qty, 0);
-      return { cart, count };
+      const exists = state.items.find(i => i.id === product.id);
+      const items = exists
+        ? state.items.map(i => i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i)
+        : [...state.items, { ...product, quantity: 1 }];
+      const count = items.reduce((a, i) => a + i.quantity, 0);
+      const subtotal = items.reduce((a, i) => a + parseFloat(i.price) * i.quantity, 0);
+      return { items, count, subtotal };
     });
   },
 
-  removeFromCart: (id) => {
+  updateQty: (id, qty) => {
     set((state) => {
-      const cart = state.cart.filter(i => i.id !== id);
-      const count = cart.reduce((a, i) => a + i.qty, 0);
-      return { cart, count };
+      const items = qty <= 0
+        ? state.items.filter(i => i.id !== id)
+        : state.items.map(i => i.id === id ? { ...i, quantity: qty } : i);
+      const count = items.reduce((a, i) => a + i.quantity, 0);
+      const subtotal = items.reduce((a, i) => a + parseFloat(i.price) * i.quantity, 0);
+      return { items, count, subtotal };
     });
   },
 
-  clearCart: () => set({ cart: [], count: 0 }),
+  removeItem: (id) => {
+    set((state) => {
+      const items = state.items.filter(i => i.id !== id);
+      const count = items.reduce((a, i) => a + i.quantity, 0);
+      const subtotal = items.reduce((a, i) => a + parseFloat(i.price) * i.quantity, 0);
+      return { items, count, subtotal };
+    });
+  },
 
+  clearCart: () => set({ items: [], count: 0, subtotal: 0 }),
   fetchCart: async () => {}
 }));
 
-// --- WISHLIST STORE ---
 export const useWishlistStore = create((set) => ({
   wishlist: [],
 
