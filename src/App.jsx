@@ -60,6 +60,7 @@ function StoreLayout({ children }) {
       <CartDrawer />
       
       <main style={{ minHeight: "80vh", position: "relative", zIndex: 1, paddingTop: "64px" }} className="page-enter">
+        </main>
       <Footer />
       
       <Toaster 
