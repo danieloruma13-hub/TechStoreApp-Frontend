@@ -6,24 +6,43 @@ import { User, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
 import styles from './Register.module.css';
 
 export default function Register() {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
-  const { register, loading } = useAuthStore();
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' })
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleRegister = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (formData.password !== formData.confirmPassword)
-      return toast.error("Passwords do not match!");
+      return toast.error("Passwords do not match!")
     if (formData.password.length < 6)
-      return toast.error("Password must be at least 6 characters!");
-    const result = await register(formData.name, formData.email, formData.password);
-    if (result.success) {
-      toast.success("Welcome aboard!");
-      navigate('/profile');
-    } else {
-      toast.error(result.message);
+      return toast.error("Password must be at least 6 characters!")
+
+    setLoading(true)
+    try {
+      const res = await fetch('https://techstoreapp-gobr.onrender.com/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: formData.name,
+          email: formData.email,
+          password: formData.password
+        })
+      })
+      const data = await res.json()
+      if (data.success) {
+        localStorage.setItem('ts_token', data.token)
+        localStorage.setItem('ts_user', JSON.stringify(data.user))
+        toast.success("Welcome aboard!")
+        navigate('/profile')
+      } else {
+        toast.error(data.message || 'Registration failed')
+      }
+    } catch (err) {
+      toast.error("Network error: " + err.message)
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="page-enter" style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', padding: '2rem 0' }}>
@@ -103,5 +122,6 @@ export default function Register() {
         </div>
       </div>
     </div>
-  );
+  )
 }
+

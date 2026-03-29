@@ -6,25 +6,40 @@ import { Mail, Lock, ArrowRight } from 'lucide-react';
 import styles from './Login.module.css';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { login, loading } = useAuthStore();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuthStore()
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await login(email, password);
-    if (result.success) {
-      toast.success('Welcome back!');
-      if (result.role === 'admin') {
-        navigate('/admin');
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const res = await fetch('https://techstoreapp-gobr.onrender.com/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+      const data = await res.json()
+      if (data.success) {
+        localStorage.setItem('ts_token', data.token)
+        localStorage.setItem('ts_user', JSON.stringify(data.user))
+        toast.success('Welcome back!')
+        if (data.user.role === 'admin') {
+          navigate('/admin')
+        } else {
+          navigate('/profile')
+        }
       } else {
-        navigate('/profile');
+        toast.error(data.message || 'Login failed')
       }
-    } else {
-      toast.error(result.message);
+    } catch (err) {
+      toast.error("Network error: " + err.message)
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="container page-enter" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
@@ -71,5 +86,5 @@ export default function Login() {
         </footer>
       </div>
     </div>
-  );
+  )
 }
