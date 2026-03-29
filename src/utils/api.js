@@ -1,36 +1,27 @@
 import axios from 'axios';
 
-// 1. Create the instance
 const api = axios.create({
-  // REPLACE THIS with your exact Render URL from the screenshot
-  baseURL: 'https://techstoreapp-gobr.onrender.com/api', 
-  withCredentials: true,
+  baseURL: 'https://techstoreapp-gobr.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
-// 2. Add a Request Interceptor (Debug Tool)
 api.interceptors.request.use((config) => {
-  console.log(`🚀 Sending ${config.method.toUpperCase()} to: ${config.url}`);
+  const token = localStorage.getItem('ts_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+}, (error) => Promise.reject(error));
 
-// 3. Add a Response Interceptor (Data & Error Handler)
 api.interceptors.response.use(
-  (response) => {
-    // This logs the actual data coming back from Render
-    console.log("✅ API Response Data:", response.data);
-    return response;
-  },
+  (response) => response,
   (error) => {
-    // This logs specific server errors (like 404 or 500)
     if (error.response) {
-      console.error("❌ Backend Error:", error.response.status, error.response.data);
+      console.error("API Error:", error.response.status, error.response.data);
     } else {
-      console.error("❌ Network Error: Is the backend awake?");
+      console.error("Network Error:", error.message);
     }
     return Promise.reject(error);
   }
