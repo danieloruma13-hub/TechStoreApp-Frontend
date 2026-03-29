@@ -14,10 +14,8 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await login(email, password);
-    
     if (result.success) {
       toast.success('Welcome back!');
-      // Redirect based on role
       if (result.role === 'admin') {
         navigate('/admin');
       } else {
@@ -41,10 +39,10 @@ export default function Login() {
             <label className="label">Email Address</label>
             <div style={{ position: 'relative' }}>
               <Mail size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--purple-400)' }} />
-              <input 
+              <input
                 type="email" className="input" style={{ paddingLeft: '40px' }}
-                placeholder="dan@code.com" required 
-                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="dan@code.com" required
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
@@ -53,10 +51,10 @@ export default function Login() {
             <label className="label">Password</label>
             <div style={{ position: 'relative' }}>
               <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--purple-400)' }} />
-              <input 
+              <input
                 type="password" className="input" style={{ paddingLeft: '40px' }}
-                placeholder="••••••••" required 
-                onChange={(e) => setPassword(e.target.value)} 
+                placeholder="••••••••" required
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>

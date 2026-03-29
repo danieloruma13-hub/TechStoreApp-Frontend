@@ -1,36 +1,35 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { User, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../context/store';
 import { toast } from 'react-hot-toast';
+import { User, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
 import styles from './Register.module.css';
 
 export default function Register() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const { register, loading } = useAuthStore();
+  const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword)
       return toast.error("Passwords do not match!");
+    if (formData.password.length < 6)
+      return toast.error("Password must be at least 6 characters!");
+    const result = await register(formData.name, formData.email, formData.password);
+    if (result.success) {
+      toast.success("Welcome aboard!");
+      navigate('/profile');
+    } else {
+      toast.error(result.message);
     }
-    // Logic for your authStore.register(formData)
-    toast.success("Welcome to the crew, " + formData.name.split(' ')[0] + "!");
   };
 
   return (
     <div className="page-enter" style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', padding: '2rem 0' }}>
-      {/* Decorative Orbs */}
-      <div className="orb" style={{ width: '400px', height: '400px', background: 'var(--purple-600)', top: '10%', left: '-5%', opacity: 0.05 }} />
-      <div className="orb" style={{ width: '300px', height: '300px', background: 'var(--yellow-400)', bottom: '5%', right: '2%', opacity: 0.04 }} />
-
       <div className="container">
         <div className={styles.authCard}>
           <header style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <span className="section-eyebrow">Join the Crew</span>
             <h1 className="section-title" style={{ fontSize: '2rem' }}>Create <span className="gradient-text">Account</span></h1>
             <p className="section-sub">Get exclusive access to pro tech gear.</p>
           </header>
@@ -38,13 +37,11 @@ export default function Register() {
           <form className={styles.form} onSubmit={handleRegister}>
             <div className="input-group">
               <label className="label">Full Name</label>
-              <div className={styles.inputWrapper}>
-                <User size={18} className={styles.icon} />
-                <input 
-                  type="text" 
-                  className="input" 
-                  placeholder="Dan Code" 
-                  required 
+              <div style={{ position: 'relative' }}>
+                <User size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--purple-400)' }} />
+                <input
+                  type="text" className="input" style={{ paddingLeft: '40px' }}
+                  placeholder="Dan Code" required
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                 />
               </div>
@@ -52,60 +49,55 @@ export default function Register() {
 
             <div className="input-group">
               <label className="label">Email Address</label>
-              <div className={styles.inputWrapper}>
-                <Mail size={18} className={styles.icon} />
-                <input 
-                  type="email" 
-                  className="input" 
-                  placeholder="dan@code.com" 
-                  required 
+              <div style={{ position: 'relative' }}>
+                <Mail size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--purple-400)' }} />
+                <input
+                  type="email" className="input" style={{ paddingLeft: '40px' }}
+                  placeholder="dan@code.com" required
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                 />
               </div>
             </div>
 
-            <div className={styles.grid}>
-              <div className="input-group">
-                <label className="label">Password</label>
-                <div className={styles.inputWrapper}>
-                  <Lock size={18} className={styles.icon} />
-                  <input 
-                    type="password" 
-                    className="input" 
-                    placeholder="••••••••" 
-                    required 
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
-                  />
-                </div>
-              </div>
-              <div className="input-group">
-                <label className="label">Confirm</label>
-                <div className={styles.inputWrapper}>
-                  <ShieldCheck size={18} className={styles.icon} />
-                  <input 
-                    type="password" 
-                    className="input" 
-                    placeholder="••••••••" 
-                    required 
-                    onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                  />
-                </div>
+            <div className="input-group">
+              <label className="label">Password</label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--purple-400)' }} />
+                <input
+                  type="password" className="input" style={{ paddingLeft: '40px' }}
+                  placeholder="••••••••" required
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                />
               </div>
             </div>
 
-            <div className={styles.terms}>
+            <div className="input-group">
+              <label className="label">Confirm Password</label>
+              <div style={{ position: 'relative' }}>
+                <ShieldCheck size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--purple-400)' }} />
+                <input
+                  type="password" className="input" style={{ paddingLeft: '40px' }}
+                  placeholder="••••••••" required
+                  onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0.5rem 0' }}>
               <input type="checkbox" id="terms" required />
-              <label htmlFor="terms">I agree to the <span className="gradient-text">Terms of Service</span></label>
+              <label htmlFor="terms" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                I agree to the <span className="gradient-text">Terms of Service</span>
+              </label>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%', marginTop: '1rem' }}>
-              Create Account <ArrowRight size={18} />
+            <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
+              {loading ? 'Creating Account...' : 'Create Account'} <ArrowRight size={18} />
             </button>
           </form>
 
-          <footer className={styles.footer}>
+          <footer style={{ marginTop: '2rem', textAlign: 'center' }}>
             <p className="section-sub">
-              Already have an account? <Link to="/login" className={styles.link}>Sign In</Link>
+              Already have an account? <Link to="/login" style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>Sign In</Link>
             </p>
           </footer>
         </div>
