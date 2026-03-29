@@ -25,6 +25,7 @@ export default function Login() {
       if (data.success) {
         localStorage.setItem('ts_token', data.token)
         localStorage.setItem('ts_user', JSON.stringify(data.user))
+        useAuthStore.setState({ user: data.user, token: data.token })
         toast.success('Welcome back!')
         if (data.user.role === 'admin') {
           navigate('/admin')
