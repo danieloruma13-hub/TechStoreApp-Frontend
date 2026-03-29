@@ -59,10 +59,7 @@ function StoreLayout({ children }) {
       <Navbar />
       <CartDrawer />
       
-      <main style={{ minHeight: '80vh', position: 'relative', zIndex: 1 }} className="page-enter">
-        {children}
-      </main>
-      
+      <main style={{ minHeight: '80vh', position: 'relative', zIndex: 1, paddingTop: '64px' }} className="page-enter">
       <Footer />
       
       <Toaster 
